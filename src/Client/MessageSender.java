@@ -9,7 +9,7 @@ class MessageSender implements Runnable {
 
         System.out.println("Client: " + s); //Display message to be sent
 
-        byte buf[] = s.getBytes(); //Get bytes from string
+        byte[] buf = s.getBytes(); //Get bytes from string
 
         //Get address
         InetAddress address = InetAddress.getByName(GameClient.host);
@@ -35,7 +35,7 @@ class MessageSender implements Runnable {
                 //Set connection status to true
                 connected = true;
 
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             }
         }
 

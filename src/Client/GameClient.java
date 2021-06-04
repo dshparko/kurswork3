@@ -30,7 +30,7 @@ public final class GameClient {
         socket = new DatagramSocket();
         System.out.println("Socket set up");
         //Set up class for recieving messages
-        messageReciever = new MessageReciever(socket);
+        messageReciever = new MessageReciever();
         //Set up class for sending messages
         messageSender = new MessageSender();
         //Set up thread handling the message reciever

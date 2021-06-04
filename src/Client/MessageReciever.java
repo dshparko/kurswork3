@@ -2,12 +2,12 @@ package Client;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
-import java.net.DatagramSocket;
+import java.util.Objects;
 
 class MessageReciever implements Runnable {
-    static byte buffer[]; //Message buffer
+    static byte[] buffer; //Message buffer
 
-    MessageReciever(DatagramSocket s) {
+    MessageReciever() {
         //Set up buffer
         buffer = new byte[1024];
     }
@@ -19,11 +19,10 @@ class MessageReciever implements Runnable {
             //Recieve data from network into packet
             GameClient.socket.receive(packet);
             //Convert pack data to string
-            String serverMessage = new String(packet.getData(), 0, packet.getLength());
             //Return recieved message
-            return serverMessage;
+            return new String(packet.getData(), 0, packet.getLength());
 
-        } catch (IOException e) {
+        } catch (IOException ignored) {
         }
 
         return null;
@@ -46,21 +45,21 @@ class MessageReciever implements Runnable {
                 StaticData.GetForm();
                 break;
             case "restart":
-                StaticData.GetForm().Restart();
+                Objects.requireNonNull(StaticData.GetForm()).Restart();
                 break;
             case "exit":
                 //Close Application. Server full(Already controling two cars)
                 System.out.println("Server down");
                 System.out.println("Server closing");
-                StaticData.GetForm().dispose();
+                Objects.requireNonNull(StaticData.GetForm()).dispose();
                 System.exit(0);
                 return false; //Stop running
             default:
                 //Split server message
                 String[] args = serverMessage.split(" ");
                 //Use array created as details for new car details
-                if (args != null && args.length == 5)
-                    StaticData.GetForm().MakeChanges(args);
+                if (args.length == 5)
+                    Objects.requireNonNull(StaticData.GetForm()).MakeChanges(args);
                 break;
         }
 
@@ -71,6 +70,7 @@ class MessageReciever implements Runnable {
         //Recieve message from server
         String serverMessage = Recieve();
         //Display server message
+        assert serverMessage != null;
         if (!serverMessage.isEmpty())
             System.out.println("Server: " + serverMessage);
         //return continue value

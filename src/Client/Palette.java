@@ -51,8 +51,8 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
             clips[1].open(AudioSystem.getAudioInputStream(new File("C:\\Users\\Lenovo\\Desktop\\untitled1\\src\\Client\\Audio\\crash.wav")));
 
             clips[2] = AudioSystem.getClip();
-            clips[2].open(AudioSystem.getAudioInputStream(new File("C:\\Users\\Lenovo\\Desktop\\untitled2\\src\\Car1\\Client\\Audio\\drive.wav")));
-        } catch (Exception e) {
+            clips[2].open(AudioSystem.getAudioInputStream(new File("C:\\Users\\Lenovo\\Desktop\\untitled1\\src\\Client\\Audio\\drive.wav")));
+        } catch (Exception ignored) {
 
         }
 
@@ -71,7 +71,7 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
             //System.out.println(currentCar1);
 
             String currentCar2 = path2 + i + ".png"; //full image path
-           // System.out.println(currentCar2);
+            // System.out.println(currentCar2);
             //initalize image object to hold the current image
             car1Images[i] = new ImageIcon(currentCar1);// Current sprite image of car 1
             car2Images[i] = new ImageIcon(currentCar2);//Current sprite image of car 2
@@ -95,7 +95,7 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
                 clips[index].setMicrosecondPosition(1);
             //Play clip
             clips[index].start();
-        } catch (Exception exc) {
+        } catch (Exception ignored) {
 
         }
     }
@@ -234,7 +234,11 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
                 timer.stop();
 
                 JOptionPane.showMessageDialog(this, "Game over, cars crashed. Type 'R' on the game UI to restart");
-            } else {
+            }//else if(carX == 378 &&carY<160){
+                //timer.stop();
+               // JOptionPane.showMessageDialog(this, "Game over");
+            //}
+                else {
                 //Move car normally
                 carPosition[xIndex] = carX;
                 carPosition[yIndex] = carY;
@@ -264,20 +268,21 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
                 case KeyEvent.VK_M:
                     playSound = !playSound;
                     break;
-
+                //   case KeyEvent.VK_ESCAPE:
+                //     break;
                 case KeyEvent.VK_R:
                     if (!timer.isRunning()) {
                         try {
                             //Send details to server
                             MessageSender.sendMessage("restart");
-                        } catch (Exception ex) {
+                        } catch (Exception ignored) {
                         }
                         Restart();
                     }
                     break;
             }
             SendDetailsToServer();
-        } catch (Exception et) {
+        } catch (Exception ignored) {
 
         }
 
@@ -297,13 +302,13 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
 
     public void MakeChanges(String[] str) {
         //car carphase carX carY displacementFactor
-        int car = Integer.valueOf(str[0]);
+        int car = Integer.parseInt(str[0]);
         if (car == StaticData.GetCarIndex()) return;
 
-        carPhase[car] = Integer.valueOf(str[1]);
-        carPosition[car == 0 ? 0 : 2] = Integer.valueOf(str[2]);
-        carPosition[car == 0 ? 1 : 3] = Integer.valueOf(str[3]);
-        displacementFactor[car] = Integer.valueOf(str[4]);
+        carPhase[car] = Integer.parseInt(str[1]);
+        carPosition[car == 0 ? 0 : 2] = Integer.parseInt(str[2]);
+        carPosition[car == 0 ? 1 : 3] = Integer.parseInt(str[3]);
+        displacementFactor[car] = Integer.parseInt(str[4]);
 
         //.SendDetailsToServer();
     }
@@ -323,7 +328,7 @@ public class Palette extends JPanel implements ActionListener, KeyListener {
         try {
             //Send details to server
             MessageSender.sendMessage(message);
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
         }
     }
 
